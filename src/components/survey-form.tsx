@@ -44,7 +44,7 @@ const formSchema = z.object({
       message:
         "The oldest person in the world is 116. Please enter your actual age.",
     }),
-  sex: z.string().nonempty(),
+  // sex: z.string().nonempty(),
   languages: z
     .object({
       value: z.string().refine((val) => {
