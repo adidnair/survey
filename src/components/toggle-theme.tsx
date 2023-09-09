@@ -1,7 +1,7 @@
 "use client"
 
 import { useTheme } from "next-themes";
-import { Sun, Moon, SunMoon } from "lucide-react";
+import { Sun, Moon, Monitor } from "lucide-react";
 import { useEffect, useState } from "react";
 import BlockSkeleton from "./block-skeleton";
 
@@ -32,7 +32,7 @@ const ToggleTheme = () => {
     }}>
       {(theme === "light")?
         <Sun size={svg_size} /> : (theme === "dark")?
-          <Moon size={svg_size} /> : <SunMoon size={svg_size} />}
+          <Moon size={svg_size} /> : <Monitor size={svg_size} />}
     </div>
   )
 }
