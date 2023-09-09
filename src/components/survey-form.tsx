@@ -37,7 +37,7 @@ const formSchema = z.object({
   age: z.coerce
     .number({ invalid_type_error: "Please enter a number." })
     .int()
-    .min(0, {
+    .min(1, {
       message: "Please enter your actual age.",
     })
     .max(116, {
