@@ -17,7 +17,6 @@ import { Slider } from "../ui/slider";
 import { FormError } from "../myui/form-error";
 import { formFields } from "../survey-form";
 
-
 export const valToLabel: Record<string, string> = {}
 
 valToLabel["py"] = "Python"
@@ -49,7 +48,7 @@ export type LanguageEntry = {
   readonly label: string,
 }
 
-const LanguageError = ({errObject, index} : {errObject: FieldErrors, index: number}) => {
+const LanguageError = ({errObject, index, className} : {errObject: FieldErrors, index: number, className?: string}) => {
   if (errObject) {
     if (errObject.languages) {
       // @ts-ignore
@@ -57,10 +56,10 @@ const LanguageError = ({errObject, index} : {errObject: FieldErrors, index: numb
       if (errArray[index]) {
         const err = errArray[index]
         if (err.experience) {
-          return <FormError text={err.experience.message} />
+          return <FormError text={err.experience.message} className={className} />
         }
         if (err.recommendation) {
-          return <FormError text={err.recommendation.message} />
+          return <FormError text={err.recommendation.message} className={className} />
         }
       }
     }
@@ -70,18 +69,23 @@ const LanguageError = ({errObject, index} : {errObject: FieldErrors, index: numb
 
 export const LanguagesHeader = () => {
   return (
-    <div className="flex flex-row items-center gap-4 w-full h-14">
-      <Label className="w-[210px] text-muted-foreground shrink-0">
+    <div className="hidden lg:flex flex-row items-center gap-4 w-full h-14">
+      <Label className="w-[214px] text-muted-foreground shrink-0">
         Language
       </Label>
       <Separator orientation="vertical" className="h-10" />
-      <Label className="w-[332px] text-muted-foreground shrink-0">
-        Rate your experience with the language
-      </Label>
+      <div className="grow max-w-[316px]">
+        <Label className="text-muted-foreground shrink-0">
+          Rate your experience with the language
+        </Label>
+      </div>
       <Separator orientation="vertical" className="h-10" />
-      <Label className="text-muted-foreground shrink-0">
+      <div className="grow max-w-[322px]">
+        <Label className="text-muted-foreground shrink-0">
         How likely are you to recommend the language?
-      </Label>
+        </Label>
+      </div>
+      <div className="w-[44px]"></div>
     </div>
   )
 }
@@ -92,26 +96,30 @@ export const Languages = ({languages, form, field} : {
   field: ControllerRenderProps<formFields, "languages">
   }) => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="lg:flex lg:flex-col gap-4">
       {field.value.map((selected_language, index) => {
         return (
+
           <>
+          {form.formState.isSubmitted && <LanguageError errObject={form.formState.errors} index={index}
+          className="lg:hidden"/>}
           <div
-            className="flex flex-row pt-2 gap-12"
+            className="flex flex-col gap-8 lg:flex-row lg:w-full pt-2 lg:gap-12 max-lg:mb-8"
             key={selected_language.value}
           >
+            <div className="flex flex-row gap-8">
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   role="combobox"
-                  className="w-[200px] justify-between shrink-0"
+                  className="w-52 justify-between shrink-0"
                 >
                   {valToLabel[selected_language.value]}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
+              <PopoverContent className="w-52 p-0">
                 <Command>
                   <CommandInput placeholder="Search language..." />
                   <CommandEmpty>No language found.</CommandEmpty>
@@ -163,11 +171,29 @@ export const Languages = ({languages, form, field} : {
                 </Command>
               </PopoverContent>
             </Popover>
+            <div className="flex items-center lg:hidden">
+              <X
+                width={60}
+                className="text-muted
+                hover:text-muted-foreground hover:cursor-pointer"
+                onClick={() =>
+                  form.setValue(field.name,
+                    field.value.filter((l) => {
+                      return l.value !== selected_language.value;
+                    })
+                  )
+                }
+              />
+            </div>
+            </div>
 
-            <div className="flex justify-center">
+            <Label className="text-muted-foreground lg:hidden">
+              Rate your experience with the language
+            </Label>
+            <div className="lg:flex lg:justify-center lg:grow lg:max-w-[300px]">
               <Slider
                 name="experience"
-                className="w-80 shrink-0"
+                className="max-lg:w-80"
                 min={0}
                 max={100}
                 step={1}
@@ -188,10 +214,13 @@ export const Languages = ({languages, form, field} : {
               />
             </div>
 
-            <div className="flex justify-center">
+            <Label className="text-muted-foreground lg:hidden">
+              How likely are you to recommend the language?
+            </Label>
+            <div className="lg:flex lg:justify-center lg:grow lg:max-w-[300px]">
               <Slider
                 name="recommendation"
-                className="w-80 shrink-0"
+                className="max-lg:w-80"
                 min={0}
                 max={100}
                 step={1}
@@ -212,11 +241,10 @@ export const Languages = ({languages, form, field} : {
               />
             </div>
 
-            <div className="w-full"></div>
             <div className="flex items-center">
               <X
                 width={60}
-                className="shrink-0 text-muted
+                className="max-lg:hidden lg:shrink-0 lg:text-muted
               hover:text-muted-foreground hover:cursor-pointer"
                 onClick={() =>
                   form.setValue(field.name,
@@ -228,7 +256,8 @@ export const Languages = ({languages, form, field} : {
               />
             </div>
           </div>
-          {form.formState.isSubmitted && <LanguageError errObject={form.formState.errors} index={index}/>}
+          {form.formState.isSubmitted && <LanguageError errObject={form.formState.errors} index={index}
+          className="max-lg:hidden"/>}
           </>
         );
       })}
@@ -238,13 +267,13 @@ export const Languages = ({languages, form, field} : {
           <Button
             variant="outline"
             role="combobox"
-            className="w-[200px] justify-between text-muted-foreground bg-muted"
+            className="w-52 justify-between text-muted-foreground bg-muted"
           >
             {"Select language"}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
+        <PopoverContent className="w-52 p-0">
           <Command>
             <CommandInput placeholder="Search language..." />
             <CommandEmpty>No language found.</CommandEmpty>
