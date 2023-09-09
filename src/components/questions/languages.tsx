@@ -76,7 +76,7 @@ export const LanguagesHeader = () => {
       <Separator orientation="vertical" className="h-10" />
       <div className="grow max-w-[316px]">
         <Label className="text-muted-foreground shrink-0">
-          Rate your experience with the language
+          Describe your proficiency in the language
         </Label>
       </div>
       <Separator orientation="vertical" className="h-10" />
@@ -188,12 +188,21 @@ export const Languages = ({languages, form, field} : {
             </div>
 
             <Label className="text-muted-foreground lg:hidden">
-              Rate your experience with the language
+              Describe your proficiency in the language
             </Label>
-            <div className="lg:flex lg:justify-center lg:grow lg:max-w-[300px]">
+            <div className="flex flex-col items-center lg:grow lg:max-w-[300px] max-lg:pl-4 max-lg:w-80">
+              <div className="flex flex-row w-[110%] justify-between mb-[2px]">
+              <p className="text-xs text-muted whitespace-pre-wrap">Beginner</p>
+              <p className="text-xs text-muted whitespace-pre-wrap">Intermediate</p>
+              <p className="text-xs text-muted whitespace-pre-wrap">  Expert</p>
+              </div>
+              <div className="flex flex-row w-[98%] justify-between mb-[2px]">
+                <Separator orientation="vertical" className="h-2 w-[2px] bg-primary-foreground" />
+                <Separator orientation="vertical" className="h-2 w-[2px] bg-primary-foreground" />
+                <Separator orientation="vertical" className="h-2 w-[2px] bg-primary-foreground" />
+              </div>
               <Slider
                 name="experience"
-                className="max-lg:w-80"
                 min={0}
                 max={100}
                 step={1}
@@ -217,10 +226,19 @@ export const Languages = ({languages, form, field} : {
             <Label className="text-muted-foreground lg:hidden">
               How likely are you to recommend the language?
             </Label>
-            <div className="lg:flex lg:justify-center lg:grow lg:max-w-[300px]">
+            <div className="flex flex-col items-center lg:grow lg:max-w-[300px] max-lg:pl-4 max-lg:w-80">
+              <div className="flex flex-row w-[110%] justify-between mb-[2px]">
+              <p className="text-xs text-muted whitespace-pre-wrap">Never       </p>
+              <p className="text-xs text-muted whitespace-pre-wrap">Maybe</p>
+              <p className="text-xs text-muted whitespace-pre-wrap">Absolutely</p>
+              </div>
+              <div className="flex flex-row w-[98%] justify-between mb-[2px]">
+                <Separator orientation="vertical" className="h-2 w-[2px] bg-primary-foreground" />
+                <Separator orientation="vertical" className="h-2 w-[2px] bg-primary-foreground" />
+                <Separator orientation="vertical" className="h-2 w-[2px] bg-primary-foreground" />
+              </div>
               <Slider
                 name="recommendation"
-                className="max-lg:w-80"
                 min={0}
                 max={100}
                 step={1}
