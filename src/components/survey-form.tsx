@@ -24,6 +24,9 @@ import {
 } from "./questions/languages";
 import { Separator } from "./ui/separator";
 import { toast } from "./ui/use-toast";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { FormError } from "./myui/form-error";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z
@@ -42,7 +45,7 @@ const formSchema = z.object({
       message:
         "The oldest person in the world is 116. Please enter your actual age.",
     }),
-  // sex: z.string().nonempty(),
+  sex: z.string(),
   languages: z
     .object({
       value: z.string().refine((val) => {
@@ -129,6 +132,53 @@ const SurveyForm = () => {
 
         <FormField
           control={form.control}
+          name="sex"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Sex</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-col space-y-1"
+                >
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="male" />
+                    </FormControl>
+                    <FormLabel className="font-normal cursor-pointer">
+                      Male
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="female" />
+                    </FormControl>
+                    <FormLabel className="font-normal cursor-pointer">
+                      Female
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="" className="peer"/>
+                    </FormControl>
+                    <FormLabel className="font-normal cursor-pointer">
+                      Other
+                    </FormLabel>
+                    <Input className="absolute translate-x-20 w-32 h-8 peer-data-[state=unchecked]:hidden" {...field}/>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+              <FormDescription>Please specify your sex</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Separator />
+
+        <FormField
+          control={form.control}
           name="languages"
           render={({ field }) => {
             return (
@@ -147,6 +197,8 @@ const SurveyForm = () => {
 
         <Separator />
 
+        {(form.formState.isSubmitted && Object.keys(form.formState.errors).length !== 0)
+        && <FormError text="Please review the form for errors and make necessary corrections before resubmitting." />}
         <Button type="submit">Submit</Button>
       </form>
     </Form>
