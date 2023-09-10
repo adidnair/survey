@@ -227,7 +227,10 @@ export const Languages = ({languages, form, field} : {
             <Label className="text-muted-foreground lg:hidden">
               How likely are you to recommend the language?
             </Label>
-            <div className="flex flex-col items-center lg:grow lg:max-w-[300px] max-lg:pl-4 max-lg:w-80">
+            <div className="flex flex-col items-center lg:grow lg:max-w-[300px] max-lg:pl-4 max-lg:w-80"
+              onTouchStart={() => {document.body.style.overflow = "hidden"}}
+              onTouchEnd={() => {document.body.style.removeProperty("overflow")}}
+            >
               <div className="flex flex-row w-[110%] justify-between">
               <p className="text-xs whitespace-pre-wrap">Never       </p>
               <p className="text-xs whitespace-pre-wrap">Maybe</p>
@@ -239,8 +242,6 @@ export const Languages = ({languages, form, field} : {
                 <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
               </div>
               <Slider
-                onTouchStart={() => {document.body.style.background = "red"}}
-                onTouchEnd={() => {document.body.style.removeProperty("background")}}
                 name="recommendation"
                 min={0}
                 max={100}
