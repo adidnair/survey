@@ -165,7 +165,8 @@ const SurveyForm = () => {
                     <FormLabel className="font-normal cursor-pointer">
                       Other
                     </FormLabel>
-                    <Input className="absolute translate-x-20 w-32 h-8 peer-data-[state=unchecked]:hidden" {...field}/>
+                    <Input className="absolute translate-x-20 w-32 h-8 peer-data-[state=unchecked]:hidden"
+                    placeholder="Specify" {...field}/>
                   </FormItem>
                 </RadioGroup>
               </FormControl>

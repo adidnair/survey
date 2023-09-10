@@ -69,12 +69,12 @@ const LanguageError = ({errObject, index, className} : {errObject: FieldErrors, 
 
 export const LanguagesHeader = () => {
   return (
-    <div className="hidden lg:flex flex-row items-center gap-4 w-full h-14">
+    <div className="hidden lg:flex flex-row justify-between items-center gap-4 w-full h-14">
       <Label className="w-[214px] text-muted-foreground shrink-0">
         Language
       </Label>
       <Separator orientation="vertical" className="h-10" />
-      <div className="grow max-w-[316px]">
+      <div className="grow max-w-[322px]">
         <Label className="text-muted-foreground shrink-0">
           Describe your proficiency in the language
         </Label>
@@ -85,7 +85,8 @@ export const LanguagesHeader = () => {
         How likely are you to recommend the language?
         </Label>
       </div>
-      <div className="w-[44px]"></div>
+      <div className="w-[1px] h-full"></div>
+      <div className="w-8 h-full"></div>
     </div>
   )
 }
@@ -104,7 +105,7 @@ export const Languages = ({languages, form, field} : {
           {form.formState.isSubmitted && <LanguageError errObject={form.formState.errors} index={index}
           className="lg:hidden"/>}
           <div
-            className="flex flex-col gap-8 lg:flex-row lg:w-full pt-2 lg:gap-12 max-lg:mb-8"
+            className="flex flex-col gap-8 lg:flex-row lg:justify-between lg:w-full pt-2 lg:gap-12 max-lg:mb-8"
             key={selected_language.value}
           >
             <div className="flex flex-row gap-8">
@@ -174,8 +175,8 @@ export const Languages = ({languages, form, field} : {
             <div className="flex items-center lg:hidden">
               <X
                 width={60}
-                className="text-muted
-                hover:text-muted-foreground hover:cursor-pointer"
+                className="text-muted-foreground
+                hover:text-primary hover:cursor-pointer"
                 onClick={() =>
                   form.setValue(field.name,
                     field.value.filter((l) => {
@@ -191,15 +192,15 @@ export const Languages = ({languages, form, field} : {
               Describe your proficiency in the language
             </Label>
             <div className="flex flex-col items-center lg:grow lg:max-w-[300px] max-lg:pl-4 max-lg:w-80">
-              <div className="flex flex-row w-[110%] justify-between mb-[2px]">
-              <p className="text-xs text-muted whitespace-pre-wrap">Beginner</p>
-              <p className="text-xs text-muted whitespace-pre-wrap">Intermediate</p>
-              <p className="text-xs text-muted whitespace-pre-wrap">  Expert</p>
+              <div className="flex flex-row w-[110%] justify-between">
+              <p className="text-xs whitespace-pre-wrap">Beginner</p>
+              <p className="text-xs whitespace-pre-wrap">Intermediate</p>
+              <p className="text-xs whitespace-pre-wrap">  Expert</p>
               </div>
-              <div className="flex flex-row w-[98%] justify-between mb-[2px]">
-                <Separator orientation="vertical" className="h-2 w-[2px] bg-primary-foreground" />
-                <Separator orientation="vertical" className="h-2 w-[2px] bg-primary-foreground" />
-                <Separator orientation="vertical" className="h-2 w-[2px] bg-primary-foreground" />
+              <div className="flex flex-row w-[98%] justify-between mb-[3px]">
+                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
               </div>
               <Slider
                 name="experience"
@@ -227,15 +228,15 @@ export const Languages = ({languages, form, field} : {
               How likely are you to recommend the language?
             </Label>
             <div className="flex flex-col items-center lg:grow lg:max-w-[300px] max-lg:pl-4 max-lg:w-80">
-              <div className="flex flex-row w-[110%] justify-between mb-[2px]">
-              <p className="text-xs text-muted whitespace-pre-wrap">Never       </p>
-              <p className="text-xs text-muted whitespace-pre-wrap">Maybe</p>
-              <p className="text-xs text-muted whitespace-pre-wrap">Absolutely</p>
+              <div className="flex flex-row w-[110%] justify-between">
+              <p className="text-xs whitespace-pre-wrap">Never       </p>
+              <p className="text-xs whitespace-pre-wrap">Maybe</p>
+              <p className="text-xs whitespace-pre-wrap">Absolutely</p>
               </div>
-              <div className="flex flex-row w-[98%] justify-between mb-[2px]">
-                <Separator orientation="vertical" className="h-2 w-[2px] bg-primary-foreground" />
-                <Separator orientation="vertical" className="h-2 w-[2px] bg-primary-foreground" />
-                <Separator orientation="vertical" className="h-2 w-[2px] bg-primary-foreground" />
+              <div className="flex flex-row w-[98%] justify-between mb-[3px]">
+                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
               </div>
               <Slider
                 name="recommendation"
@@ -261,9 +262,8 @@ export const Languages = ({languages, form, field} : {
 
             <div className="flex items-center">
               <X
-                width={60}
-                className="max-lg:hidden lg:shrink-0 lg:text-muted
-              hover:text-muted-foreground hover:cursor-pointer"
+                className="max-lg:hidden shrink-0 text-muted-foreground
+                hover:text-primary hover:cursor-pointer"
                 onClick={() =>
                   form.setValue(field.name,
                     field.value.filter((l) => {
