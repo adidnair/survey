@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import {
   LanguageEntry,
-  valToLabel,
+  languageValToLabel,
   language_vals,
   LanguagesHeader,
   Languages,
@@ -26,7 +26,8 @@ import { Separator } from "./ui/separator";
 import { toast } from "./ui/use-toast";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { FormError } from "./myui/form-error";
-import { useState } from "react";
+import { skill_levels } from "./questions/skill";
+import { WebFrameworkEntry, WebFrameworks, webFrameworkValToLabel, web_framework_vals } from "./questions/web-frameworks";
 
 const formSchema = z.object({
   email: z
@@ -46,12 +47,17 @@ const formSchema = z.object({
         "The oldest person in the world is 116. Please enter your actual age.",
     }),
   sex: z.string(),
+  skill: z.enum(skill_levels.map((val) => val[0]) as [string, ...string[]]),
   languages: z
     .object({
-      value: z.string().refine((val) => {
-        return language_vals.includes(val)
-      },
-      {message: "value refine oopsie"}),
+      value: z.enum(language_vals as readonly [string, ...string[]]),
+      experience: z.number().int().min(0, {message: "Please rate your experience"}).max(100),
+      recommendation: z.number().int().min(0, {message: "Please enter your recommendation"}).max(100),
+    })
+    .array(),
+  webFrameworks: z
+    .object({
+      value: z.enum(web_framework_vals as readonly [string, ...string[]]),
       experience: z.number().int().min(0, {message: "Please rate your experience"}).max(100),
       recommendation: z.number().int().min(0, {message: "Please enter your recommendation"}).max(100),
     })
@@ -67,6 +73,7 @@ const SurveyForm = () => {
       email: "",
       age: undefined,
       languages: [],
+      webFrameworks: [],
     },
   });
 
@@ -81,7 +88,14 @@ const SurveyForm = () => {
   const languages: readonly LanguageEntry[] = language_vals.map((val) => {
     return {
       value: val,
-      label: valToLabel[val],
+      label: languageValToLabel[val],
+    };
+  });
+
+  const webFrameworks: readonly WebFrameworkEntry[] = web_framework_vals.map((val) => {
+    return {
+      value: val,
+      label: webFrameworkValToLabel[val],
     };
   });
 
@@ -180,6 +194,42 @@ const SurveyForm = () => {
 
         <FormField
           control={form.control}
+          name="skill"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Skill</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-col space-y-1"
+                >
+                {skill_levels.map((level) => {
+                  return (
+                    <>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value={level[0]} />
+                        </FormControl>
+                        <FormLabel className="font-normal cursor-pointer">
+                          {level.charAt(0).toUpperCase() + level.slice(1)}
+                        </FormLabel>
+                      </FormItem>
+                    </>
+                  )
+                })}
+                </RadioGroup>
+              </FormControl>
+              <FormDescription>Select which skill level describes you best</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Separator />
+
+        <FormField
+          control={form.control}
           name="languages"
           render={({ field }) => {
             return (
@@ -198,6 +248,26 @@ const SurveyForm = () => {
 
         <Separator />
 
+        <FormField
+          control={form.control}
+          name="webFrameworks"
+          render={({ field }) => {
+            return (
+            <FormItem className="flex flex-col">
+              <FormLabel className="mb-1">Web Frameworks/Libraries</FormLabel>
+              {(field.value.length > 0) && <LanguagesHeader />}
+              <FormControl>
+               <WebFrameworks webFrameworks={webFrameworks} form={form} field={field} />
+              </FormControl>
+              <FormDescription>
+                Select all the frameworks/libraries you know about.
+              </FormDescription>
+            </FormItem>
+          )}}
+        />
+
+        <Separator />
+
         {(form.formState.isSubmitted && Object.keys(form.formState.errors).length !== 0)
         && <FormError text="Please review the form for errors and make necessary corrections before resubmitting." />}
         <Button type="submit">Submit</Button>
@@ -205,5 +275,11 @@ const SurveyForm = () => {
     </Form>
   );
 };
+
+// Web Frameworks
+// Databases
+// Cloud services
+// SaaSs
+// Misc libraries
 
 export default SurveyForm;

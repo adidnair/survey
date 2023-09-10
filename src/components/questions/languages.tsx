@@ -17,25 +17,33 @@ import { Slider } from "../ui/slider";
 import { FormError } from "../myui/form-error";
 import { formFields } from "../survey-form";
 
-export const valToLabel: Record<string, string> = {}
+export const languageValToLabel: Record<string, string> = {}
 
-valToLabel["py"] = "Python"
-valToLabel["js"] = "JavaScript"
-valToLabel["ts"] = "TypeScript"
-valToLabel["c"] = "C"
-valToLabel["cpp"] = "C++"
-valToLabel["go"] = "Go"
-valToLabel["rust"] = "Rust"
+languageValToLabel["py"] = "Python"
+languageValToLabel["js"] = "JavaScript"
+languageValToLabel["ts"] = "TypeScript"
+languageValToLabel["c"] = "C"
+languageValToLabel["cpp"] = "C++"
+languageValToLabel["go"] = "Golang"
+languageValToLabel["rust"] = "Rust"
+languageValToLabel["java"] = "Java"
+languageValToLabel["html"] = "HTML"
+languageValToLabel["php"] = "PHP"
+languageValToLabel["dart"] = "Dart"
+languageValToLabel["swift"] = "Swift"
+languageValToLabel["perl"] = "Perl"
+languageValToLabel["bash"] = "Bash"
+languageValToLabel["kotlin"] = "Kotlin"
+languageValToLabel["csharp"] = "C#"
+languageValToLabel["haskell"] = "Haskell"
+languageValToLabel["ocaml"] = "OCaml"
+languageValToLabel["ruby"] = "Ruby"
+languageValToLabel["r"] = "R"
+languageValToLabel["lua"] = "Lua"
+languageValToLabel["elixir"] = "Elixir"
+languageValToLabel["lisp"] = "Lisp"
 
-export const language_vals: readonly string[] = [
-  "py",
-  "js",
-  "ts",
-  "c",
-  "cpp",
-  "go",
-  "rust",
-] as const;
+export const language_vals: readonly string[] = [...Object.keys(languageValToLabel)] as const;
 
 export type LanguageResponse = {
   value: string,
@@ -116,15 +124,15 @@ export const Languages = ({languages, form, field} : {
                   role="combobox"
                   className="w-52 justify-between shrink-0"
                 >
-                  {valToLabel[selected_language.value]}
+                  {languageValToLabel[selected_language.value]}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-52 p-0">
-                <Command>
+                <Command className="max-h-72">
                   <CommandInput placeholder="Search language..." />
                   <CommandEmpty>No language found.</CommandEmpty>
-                  <CommandGroup>
+                  <CommandGroup className="overflow-y-scroll">
                     {languages
                       .filter((l) => {
                         if (
@@ -192,12 +200,12 @@ export const Languages = ({languages, form, field} : {
               Describe your proficiency in the language
             </Label>
             <div className="flex flex-col items-center lg:grow lg:max-w-[300px] max-lg:pl-4 max-lg:w-80">
-              <div className="flex flex-row w-[110%] justify-between">
+              <div className="flex flex-row w-[105%] justify-between">
               <p className="text-xs whitespace-pre-wrap">Beginner</p>
               <p className="text-xs whitespace-pre-wrap">Intermediate</p>
               <p className="text-xs whitespace-pre-wrap">  Expert</p>
               </div>
-              <div className="flex flex-row w-[98%] justify-between mb-[3px]">
+              <div className="flex flex-row w-[94%] justify-between mb-[3px]">
                 <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
                 <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
                 <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
@@ -228,12 +236,12 @@ export const Languages = ({languages, form, field} : {
               How likely are you to recommend the language?
             </Label>
             <div className="flex flex-col items-center touch-none lg:grow lg:max-w-[300px] max-lg:pl-4 max-lg:w-80">
-              <div className="flex flex-row w-[110%] justify-between">
+              <div className="flex flex-row w-[105%] justify-between">
               <p className="text-xs whitespace-pre-wrap">Never       </p>
               <p className="text-xs whitespace-pre-wrap">Maybe</p>
               <p className="text-xs whitespace-pre-wrap">Absolutely</p>
               </div>
-              <div className="flex flex-row w-[98%] justify-between mb-[3px]">
+              <div className="flex flex-row w-[94%] justify-between mb-[3px]">
                 <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
                 <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
                 <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
@@ -292,10 +300,10 @@ export const Languages = ({languages, form, field} : {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-52 p-0">
-          <Command>
+          <Command className="max-h-72">
             <CommandInput placeholder="Search language..." />
             <CommandEmpty>No language found.</CommandEmpty>
-            <CommandGroup>
+            <CommandGroup className="overflow-y-scroll">
               {languages
                 .filter((language) => {
                   for (const l of field.value) {

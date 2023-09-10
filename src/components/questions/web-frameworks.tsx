@@ -15,41 +15,54 @@ import {
 import { Button } from "../ui/button";
 import { Slider } from "../ui/slider";
 import { FormError } from "../myui/form-error";
+import { formFields } from "../survey-form";
 
+export const webFrameworkValToLabel: Record<string, string> = {}
 
-export const valToLabel: Record<string, string> = {}
+webFrameworkValToLabel["express"] = "ExpressJS"
+webFrameworkValToLabel["next"] = "NextJS"
+webFrameworkValToLabel["nuxt"] = "NuxtJS"
+webFrameworkValToLabel["astro"] = "Astro"
+webFrameworkValToLabel["react"] = "React"
+webFrameworkValToLabel["flask"] = "Flask"
+webFrameworkValToLabel["django"] = "Django"
+webFrameworkValToLabel["angular"] = "Angular"
+webFrameworkValToLabel["jquery"] = "JQuery"
+webFrameworkValToLabel["rails"] = "Ruby on Rails"
+webFrameworkValToLabel["bootstrap"] = "Bootstrap"
+webFrameworkValToLabel["tailwind"] = "TailwindCSS"
+webFrameworkValToLabel["fastapi"] = "FastAPI"
+webFrameworkValToLabel["aspnet"] = "ASP.NET"
+webFrameworkValToLabel["svelte"] = "Svelte"
+webFrameworkValToLabel["vite"] = "Vite"
+webFrameworkValToLabel["htmx"] = "HTMX"
+webFrameworkValToLabel["laravel"] = "Laravel"
 
-valToLabel["next"] = "NextJS"
-valToLabel["nuxt"] = "NuxtJS"
-valToLabel["react"] = "React"
-valToLabel["svelte"] = "SvelteKit"
-valToLabel["angular"] = "Angular"
+export const web_framework_vals: readonly string[] = [...Object.keys(webFrameworkValToLabel)] as const
 
-export const framework_vals: readonly string[] = [
-"next",
-"nuxt",
-"react",
-"svelte",
-"angular",
-] as const;
+export type WebFrameworkResponse = {
+  value: string,
+  experience: number,
+  recommendation: number,
+}
 
-export type FrameworkEntry = {
+export type WebFrameworkEntry = {
   readonly value: string,
   readonly label: string,
 }
 
-const FrameworkError = ({errObject, index} : {errObject: FieldErrors, index: number}) => {
+const WebFrameworkError = ({errObject, index, className} : {errObject: FieldErrors, index: number, className?: string}) => {
   if (errObject) {
-    if (errObject.frameworks) {
+    if (errObject.webFrameworks) {
       // @ts-ignore
-      const errArray = errObject.frameworks as any[]
+      const errArray = errObject.webFrameworks as any[]
       if (errArray[index]) {
         const err = errArray[index]
         if (err.experience) {
-          return <FormError text={err.experience.message} />
+          return <FormError text={err.experience.message} className={className} />
         }
         if (err.recommendation) {
-          return <FormError text={err.recommendation.message} />
+          return <FormError text={err.recommendation.message} className={className} />
         }
       }
     }
@@ -57,71 +70,65 @@ const FrameworkError = ({errObject, index} : {errObject: FieldErrors, index: num
   return null
 }
 
-export const FrameworkHeader = () => {
+export const WebFrameworksHeader = () => {
   return (
-    <div className="flex flex-row items-center gap-4 w-full h-14">
-      <Label className="w-[210px] text-muted-foreground shrink-0">
-        Frameworks
+    <div className="hidden lg:flex flex-row justify-between items-center gap-4 w-full h-14">
+      <Label className="w-[214px] text-muted-foreground shrink-0">
+        Framework/Library
       </Label>
       <Separator orientation="vertical" className="h-10" />
-      <Label className="w-[332px] text-muted-foreground shrink-0">
-        Rate your experience with the framework
-      </Label>
+      <div className="grow max-w-[322px]">
+        <Label className="text-muted-foreground shrink-0">
+          Describe your proficiency in the framework/library
+        </Label>
+      </div>
       <Separator orientation="vertical" className="h-10" />
-      <Label className="text-muted-foreground shrink-0">
-        How likely are you to recommend the framework?
-      </Label>
+      <div className="grow max-w-[322px]">
+        <Label className="text-muted-foreground shrink-0">
+        How likely are you to recommend the framework/library?
+        </Label>
+      </div>
+      <div className="w-[1px] h-full"></div>
+      <div className="w-8 h-full"></div>
     </div>
   )
 }
 
-export const Frameworks = ({languages: frameworks, form, field} : {
-  languages: readonly FrameworkEntry[],
-  form: UseFormReturn<{
-    email: string;
-    age: number;
-    frameworks: {
-      value: string;
-      experience: number;
-      recommendation: number;
-    }[];
-}, any, undefined>,
-  field: ControllerRenderProps<{
-    email: string;
-    age: number;
-    frameworks: {
-      value: string;
-      experience: number;
-      recommendation: number;
-    }[];
-}, "frameworks">
+export const WebFrameworks = ({webFrameworks, form, field} : {
+  webFrameworks: readonly WebFrameworkEntry[],
+  form: UseFormReturn<formFields, any, undefined>,
+  field: ControllerRenderProps<formFields, "webFrameworks">
   }) => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="lg:flex lg:flex-col gap-4">
       {field.value.map((selected_language, index) => {
         return (
+
           <>
+          {form.formState.isSubmitted && <WebFrameworkError errObject={form.formState.errors} index={index}
+          className="lg:hidden"/>}
           <div
-            className="flex flex-row pt-2 gap-12"
+            className="flex flex-col gap-8 lg:flex-row lg:justify-between lg:w-full pt-2 lg:gap-12 max-lg:mb-8"
             key={selected_language.value}
           >
+            <div className="flex flex-row gap-8">
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   role="combobox"
-                  className="w-[200px] justify-between shrink-0"
+                  className="w-52 justify-between shrink-0"
                 >
-                  {valToLabel[selected_language.value]}
+                  {webFrameworkValToLabel[selected_language.value]}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
-                <Command>
+              <PopoverContent className="w-52 p-0">
+                <Command className="max-h-72">
                   <CommandInput placeholder="Search language..." />
                   <CommandEmpty>No language found.</CommandEmpty>
-                  <CommandGroup>
-                    {frameworks
+                  <CommandGroup className="overflow-y-scroll">
+                    {webFrameworks
                       .filter((l) => {
                         if (
                           l.value ===
@@ -168,11 +175,38 @@ export const Frameworks = ({languages: frameworks, form, field} : {
                 </Command>
               </PopoverContent>
             </Popover>
+            <div className="flex items-center lg:hidden">
+              <X
+                width={60}
+                className="text-muted-foreground
+                hover:text-primary hover:cursor-pointer"
+                onClick={() =>
+                  form.setValue(field.name,
+                    field.value.filter((l) => {
+                      return l.value !== selected_language.value;
+                    })
+                  )
+                }
+              />
+            </div>
+            </div>
 
-            <div className="flex justify-center">
+            <Label className="text-muted-foreground lg:hidden">
+              Describe your proficiency in the language
+            </Label>
+            <div className="flex flex-col items-center lg:grow lg:max-w-[300px] max-lg:pl-4 max-lg:w-80">
+              <div className="flex flex-row w-[105%] justify-between">
+              <p className="text-xs whitespace-pre-wrap">Beginner</p>
+              <p className="text-xs whitespace-pre-wrap">Intermediate</p>
+              <p className="text-xs whitespace-pre-wrap">  Expert</p>
+              </div>
+              <div className="flex flex-row w-[94%] justify-between mb-[3px]">
+                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+              </div>
               <Slider
                 name="experience"
-                className="w-80 shrink-0"
                 min={0}
                 max={100}
                 step={1}
@@ -193,10 +227,22 @@ export const Frameworks = ({languages: frameworks, form, field} : {
               />
             </div>
 
-            <div className="flex justify-center">
+            <Label className="text-muted-foreground lg:hidden">
+              How likely are you to recommend the language?
+            </Label>
+            <div className="flex flex-col items-center touch-none lg:grow lg:max-w-[300px] max-lg:pl-4 max-lg:w-80">
+              <div className="flex flex-row w-[105%] justify-between">
+              <p className="text-xs whitespace-pre-wrap">Never       </p>
+              <p className="text-xs whitespace-pre-wrap">Maybe</p>
+              <p className="text-xs whitespace-pre-wrap">Absolutely</p>
+              </div>
+              <div className="flex flex-row w-[94%] justify-between mb-[3px]">
+                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+              </div>
               <Slider
                 name="recommendation"
-                className="w-80 shrink-0"
                 min={0}
                 max={100}
                 step={1}
@@ -217,12 +263,10 @@ export const Frameworks = ({languages: frameworks, form, field} : {
               />
             </div>
 
-            <div className="w-full"></div>
             <div className="flex items-center">
               <X
-                width={60}
-                className="shrink-0 text-muted
-              hover:text-muted-foreground hover:cursor-pointer"
+                className="max-lg:hidden shrink-0 text-muted-foreground
+                hover:text-primary hover:cursor-pointer"
                 onClick={() =>
                   form.setValue(field.name,
                     field.value.filter((l) => {
@@ -233,7 +277,8 @@ export const Frameworks = ({languages: frameworks, form, field} : {
               />
             </div>
           </div>
-          {form.formState.isSubmitted && <FrameworkError errObject={form.formState.errors} index={index}/>}
+          {form.formState.isSubmitted && <WebFrameworkError errObject={form.formState.errors} index={index}
+          className="max-lg:hidden"/>}
           </>
         );
       })}
@@ -243,18 +288,18 @@ export const Frameworks = ({languages: frameworks, form, field} : {
           <Button
             variant="outline"
             role="combobox"
-            className="w-[200px] justify-between text-muted-foreground bg-muted"
+            className="w-52 justify-between text-muted-foreground bg-muted"
           >
             {"Select language"}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
-          <Command>
+        <PopoverContent className="w-52 p-0">
+          <Command className="max-h-72">
             <CommandInput placeholder="Search language..." />
             <CommandEmpty>No language found.</CommandEmpty>
-            <CommandGroup>
-              {frameworks
+            <CommandGroup className="overflow-y-scroll">
+              {webFrameworks
                 .filter((language) => {
                   for (const l of field.value) {
                     if (language.value === l.value) return false;
