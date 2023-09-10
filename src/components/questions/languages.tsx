@@ -239,6 +239,7 @@ export const Languages = ({languages, form, field} : {
                 <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
               </div>
               <Slider
+                onTouchStart={() => {document.body.style.background = "red"}}
                 name="recommendation"
                 min={0}
                 max={100}
