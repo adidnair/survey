@@ -240,6 +240,7 @@ export const Languages = ({languages, form, field} : {
               </div>
               <Slider
                 onTouchStart={() => {document.body.style.background = "red"}}
+                onTouchEnd={() => {document.body.style.removeProperty("background")}}
                 name="recommendation"
                 min={0}
                 max={100}
