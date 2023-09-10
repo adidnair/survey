@@ -12,7 +12,7 @@ export default function Home() {
           <ToggleTheme />
         </div>
       </div>
-      <div className="mx-4 md:mx-16 lg:mx-32 py-20">
+      <div className="mx-8 md:mx-16 lg:mx-32 py-20">
         <SurveyForm />
       </div>
     </main>
